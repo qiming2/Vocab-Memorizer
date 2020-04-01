@@ -323,6 +323,7 @@ public class Memorizer {
         Memorizer memo = new Memorizer(dirPath);
         if (!memo.isValid()) {
             System.out.println("How dare you lie to me! Go and change it to a valid directory path");
+            return;
         }
         System.out.println("Alright! Looks like you are ready");
         System.out.println("Before we start, I want to mention that if hit q or Q for quiting");
@@ -463,32 +464,46 @@ public class Memorizer {
                 memo.addToMis(word, meaning);
             }
             List<String> options = pickMeaning(memo, meaning, words);
-            int correctIndex = options.indexOf(meaning) + Character.getNumericValue('A');
-            String correctOpt = "" + (char) correctIndex;
+            int correctIndex = options.indexOf(meaning);
+            String correctAns = "";
+            switch (correctIndex) {
+                case 0:
+                    correctAns = "A";
+                    break;
+                case 1:
+                    correctAns = "B";
+                    break;
+                case 2:
+                    correctAns = "C";
+                    break;
+                case 3:
+                    correctAns = "D";
+                    break;
+            }
             System.out.println("What is the meaning of the word: " + word);
             System.out.println("A: " + options.get(0));
             System.out.println("B: " + options.get(1));
             System.out.println("C: " + options.get(2));
             System.out.println("D: " + options.get(3));
             System.out.println("E: Stop and I need to rest");
-            ans = in.nextLine();
-            while (!ans.equalsIgnoreCase("a") && !ans.equalsIgnoreCase("b")
-             && !ans.equalsIgnoreCase("c") && !ans.equalsIgnoreCase("d")
-            && !ans.equalsIgnoreCase("e")) {
+            ans = in.nextLine().toUpperCase();
+            while (!ans.equals("A") && !ans.equals("B")
+             && !ans.equals("C") && !ans.equals("D")
+            && !ans.equals("E")) {
                 System.out.println("Can you just pick A B C D or E!!!!");
                 ans = in.nextLine();
             }
 
-            if (ans.equalsIgnoreCase("e")) {
+            if (ans.equals("E")) {
                 System.out.println("Ok, go have a rest...");
                 break;
-            } else if (ans.equalsIgnoreCase(correctOpt)) {
+            } else if (ans.equals(correctAns)) {
                 System.out.println("Yeah, you got it right :)");
             } else {
                 System.out.println("Sad, you got it wrong :(");
                 memo.addToMis(word, meaning);
             }
-            System.out.println(correctOpt + " is the correct option.");
+            System.out.println(correctAns + " is the correct option.");
             System.out.println();
             System.out.println("The meaning of -- " + word + " -- is:");
             System.out.println("    " + meaning);
