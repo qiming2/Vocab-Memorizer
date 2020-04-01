@@ -101,6 +101,13 @@ public class Memorizer {
         }
         mistakeList = new WordList();
     }
+
+    //Return totalCount to the caller
+    public int getTotalCount() {
+        return totalCount;
+    }
+
+
     // Return memoCount to the caller
     public int getMemoCount() {
         return memoCount;
@@ -398,14 +405,19 @@ public class Memorizer {
         System.out.println("Also if you ever want to stop, you can hit S or s: Stop");
         System.out.println();
         while (true) {
-            System.out.println("What is next pair or s (stop):");
-            String nextPair = in.nextLine();
+            System.out.println("What is next pair or s (stop) or d word (delete specific word):");
+            String nextPair = in.nextLine().trim();
             String[] pairs = nextPair.split(":");
             if (pairs.length != 2) {
                 if (nextPair.equalsIgnoreCase("s")) {
                     break;
-                } else {
-                    System.out.println("I don't understand what you mean, please try again");
+                }else {
+                    String[] isDelete = nextPair.split(" ");
+                    if (isDelete.length != 2 || !isDelete[0].equalsIgnoreCase("d")) {
+                        System.out.println("I don't understand what you mean, please try again");
+                    } else {
+                        memo.toBeStored.list.remove(isDelete[1]);
+                    }
                 }
             } else {
                 memo.store(pairs[0].trim(), pairs[1].trim());
@@ -475,10 +487,10 @@ public class Memorizer {
             String meaning = memo.toBeReviewed.list.get(word);
             System.out.println("(Y or N) Can you remember what does -- "
                     + word + " -- mean?");
-            resp = in.nextLine();
+            resp = in.nextLine().toUpperCase();
             while (!resp.equalsIgnoreCase("n") && !resp.equalsIgnoreCase("y")) {
                 System.out.println("Y or N, case-insensitive");
-                resp = in.nextLine();
+                resp = in.nextLine().toUpperCase();
             }
             if (resp.equalsIgnoreCase("n")) {
                 memo.addToMis(word, meaning);
@@ -511,7 +523,7 @@ public class Memorizer {
              && !ans.equals("C") && !ans.equals("D")
             && !ans.equals("E")) {
                 System.out.println("Can you just pick A B C D or E!!!!");
-                ans = in.nextLine();
+                ans = in.nextLine().toUpperCase();
             }
 
             if (ans.equals("E")) {
@@ -527,6 +539,7 @@ public class Memorizer {
             System.out.println();
             System.out.println("The meaning of -- " + word + " -- is:");
             System.out.println("    " + meaning);
+            System.out.println();
             reviewedWords.add(word);
             localReviewCount++;
             memo.incrementMemoCount();
@@ -576,6 +589,7 @@ public class Memorizer {
         System.out.println("Storing necessary information...(Please don't force quit this application)");
         memo.quit();
         System.out.println("During this period, your total memo count is: " + memo.getMemoCount() + "!");
+        System.out.println("Your count since you have used memorizer is: " + memo.getTotalCount() + "!");
         System.out.println("You are gonna do fine in that test, trust me ^_^");
         System.out.println("Enjoy the rest of your day!");
         System.out.println();
