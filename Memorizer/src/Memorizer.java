@@ -177,7 +177,7 @@ public class Memorizer {
     public void deleteList(String file) {
         String[] wordLists = dir.list();
         for (String fileName: wordLists) {
-            if (fileName.equals(file + "json")) {
+            if (fileName.equals(file + ".json")) {
                 File curFile = new File(dirPath, fileName);
                 if (curFile.delete()) {
                     System.out.println("List deleted successfully: " + file);
@@ -440,11 +440,24 @@ public class Memorizer {
             System.out.println("A or a: add specified lists to the review list");
             System.out.println("AA or aa: clear review list and add all lists to the review list");
             System.out.println("S or s: start reviewing the review list!");
+            System.out.println("D or d: delete a specific list from the review list!");
             System.out.println();
             resp = in.nextLine();
             if (resp.equalsIgnoreCase("c")) {
                 memo.clearReviewed();
-            } else if (resp.equalsIgnoreCase("a")) {
+            } else if (resp.equalsIgnoreCase("d")) {
+                String name = "";
+                while (true) {
+                    System.out.println("What is name of the list that you want to delete:");
+                    System.out.println("Or hit S or s: Stop current action of deleting");
+                    name = in.nextLine();
+                    if (name.equalsIgnoreCase("s")) {
+                        break;
+                    } else {
+                        memo.deleteFromReview(name);
+                    }
+                }
+            }else if (resp.equalsIgnoreCase("a")) {
                 String name = "";
                 while (true) {
                     System.out.println("What is name of the list that you want to add:");
