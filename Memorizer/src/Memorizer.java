@@ -134,8 +134,7 @@ public class Memorizer {
     public void initStorage(String fileName) {
         if (!toBeStored.name.equals(fileName)) {
             serialize(toBeStored);
-            toBeStored = new WordList();
-            toBeStored.name = fileName;
+            toBeStored = deserialize(fileName + ".json");
         }
     }
 
@@ -265,8 +264,9 @@ public class Memorizer {
     private WordList deserialize(String file) {
         File reviewFile = new File(dirPath, file);
         if (!reviewFile.exists()) {
-            System.out.println("File is not valid");
-            return new WordList();
+            WordList ret = new WordList();
+            ret.name = file.substring(0, file.indexOf("."));
+            return ret;
         }
         Gson gson = new Gson();
         StringBuilder jsonString = new StringBuilder("");
