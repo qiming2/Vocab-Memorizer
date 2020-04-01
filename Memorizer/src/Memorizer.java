@@ -140,7 +140,11 @@ public class Memorizer {
     }
 
     // Store a pair into current storage
+    // word and meaning should not be null
     public void store(String word, String meaning) {
+        if (word == null || meaning == null) {
+            return;
+        }
         toBeStored.list.put(word, meaning);
     }
 
@@ -171,6 +175,22 @@ public class Memorizer {
                 File curFile = new File(dirPath, fileName);
                 if (curFile.delete()) {
                     System.out.println("List deleted successfully: " + file);
+                }
+                return;
+            }
+        }
+        System.out.println("File does not exist>_<");
+        System.out.println();
+    }
+
+    // Delete list from review list if
+    // exists
+    public void deleteFromReview(String file) {
+        String[] wordLists = dir.list();
+        for (String fileName: wordLists) {
+            if (fileName.equals(file + "json")) {
+                for (String word: deserialize(file).list.keySet()) {
+                    toBeReviewed.list.remove(word);
                 }
                 return;
             }
